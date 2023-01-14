@@ -1,7 +1,9 @@
 -- :set -package QuickCheck
 -- import Test.QuickCheck
 
-data Tree color value = Leaf | Node color value (Tree color value) (Tree color value) deriving (Show)
+data Tree color value = Leaf
+					  | Node color value (Tree color value) (Tree color value)
+	   				deriving (Show)
 
 mapTree :: (color -> color) -> (value -> value) -> Tree color value -> Tree color value
 mapTree _ _ Leaf = Leaf
@@ -14,7 +16,6 @@ size (Node _ _ left right) = 1 + size left + size right
 height :: Tree color value -> Int
 height Leaf = 0
 height (Node _ _ left right) = 1 + max (height left) (height right)
-
 
 dimension :: (a -> a -> a) -> a -> Tree color value -> a
 dimension _ v Leaf = v
@@ -54,12 +55,8 @@ infiniteNodeOfLetters (x : xs) = [((), x)] ++ infiniteNodeOfLetters xs
 
 flatten :: Tree color value -> [(color, value)]
 flatten Leaf = []
-flatten (Tree c v) = [(c,v)]
-flatten (Node c v left right) = flatten left : [(c,v)] : flatten right
+flatten (Node c v left right) = [(c,v)] ++ flatten left ++ flatten right
 
-
-
--- flatten (Node c v (Tree cL vL) (Tree cR vR)) = [(cL, vL)] : flatten : [(cR, vR)]
 
 
 
